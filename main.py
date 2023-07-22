@@ -87,6 +87,7 @@ def train(model, loader, criterion, opt, cfg, orig_model=None):
     magnitudes = defaultdict(float)
 
     for x, y in loader:
+        print(x.shape)
         x, y = x.cuda(), y.cuda()
         logits = model(x)
         loss = criterion(logits, y)
@@ -151,7 +152,7 @@ def main(cfg):
                     cfg.data.model_name,
                     cfg.user.ckpt_dir,
                     dataset_name,
-                    ThreatModel.corruptions,
+                    ThreatModel.corruptions.value,
                 )
 
                 orig_model = copy.deepcopy(model)

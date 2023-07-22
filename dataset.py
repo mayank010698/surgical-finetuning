@@ -61,4 +61,9 @@ def get_loaders(cfg, corruption_type, severity):
         val_dataset = Subset(dataset, val_idxs)
         te_dataset = Subset(dataset, test_idxs)
 
+    loaders = {}
+    loaders["train"] = tr_dataset
+    loaders["val"] = val_dataset
+    loaders["test"] = te_dataset	
     
+    return loaders

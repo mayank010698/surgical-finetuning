@@ -2,7 +2,10 @@
 
 defaults:
   - _self_
-  - user: username
+
+user:
+  ckpt_dir: /projects/dali/mayanks4/pretrained 
+  root_dir: /projects/dali/mayanks4/data
 
 wandb:
   project: surgical-finetuning
@@ -16,7 +19,7 @@ data:
   corruption_types: [brightness]
   severity: 5
   batch_size: 64
-  num_workers: 2
+  num_workers: 1
 
 args:
   train_mode: eval
