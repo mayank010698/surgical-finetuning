@@ -20,6 +20,8 @@ data:
   severity: 5
   batch_size: 64
   num_workers: 1
+  gpu_per_node: 1
+  
 
 args:
   train_mode: eval

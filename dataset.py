@@ -13,12 +13,12 @@ def get_loaders(cfg, corruption_type, severity):
         x_corr, y_corr = load_cifar10c(
             10000, severity, cfg.user.root_dir, False, [corruption_type]
         )
-        assert cfg.args.train_n <= 9000
+        assert cfg.data.train_n <= 9000
         labels = {}
         num_classes = int(max(y_corr)) + 1
         for i in range(num_classes):
             labels[i] = [ind for ind, n in enumerate(y_corr) if n == i]
-        num_ex = cfg.args.train_n // num_classes
+        num_ex = cfg.data.train_n // num_classes
         tr_idxs = []
         val_idxs = []
         test_idxs = []
@@ -40,12 +40,12 @@ def get_loaders(cfg, corruption_type, severity):
         image_dir = data_root / "ImageNet-C" / corruption_type / str(severity)
         dataset = ImageFolder(image_dir, transform=transforms.ToTensor())
         indices = list(range(len(dataset.imgs))) #50k examples --> 50 per class
-        assert cfg.args.train_n <= 20000
+        assert cfg.data.train_n <= 20000
         labels = {}
         y_corr = dataset.targets
         for i in range(max(y_corr)+1):
             labels[i] = [ind for ind, n in enumerate(y_corr) if n == i] 
-        num_ex = cfg.args.train_n // (max(y_corr)+1)
+        num_ex = cfg.data.train_n // (max(y_corr)+1)
         tr_idxs = []
         val_idxs = []
         test_idxs = []
@@ -65,5 +65,23 @@ def get_loaders(cfg, corruption_type, severity):
     loaders["train"] = tr_dataset
     loaders["val"] = val_dataset
     loaders["test"] = te_dataset	
+
+    trainloader = DataLoader(
+        tr_dataset,
+        batch_size=cfg.data.batch_size*cfg.data.gpu_per_node,
+        num_workers=cfg.data.num_workers,
+    )
+
+    valloader = DataLoader(
+        val_dataset,
+        batch_size=cfg.data.batch_size*cfg.data.gpu_per_node, 
+        num_workers=cfg.data.num_workers,
+    )  
+
+    testloader = DataLoader(
+        te_dataset,
+        batch_size=cfg.data.batch_size*cfg.data.gpu_per_node, 
+        num_workers=cfg.data.num_workers,
+    )  
     
     return loaders
