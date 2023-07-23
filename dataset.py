@@ -84,4 +84,4 @@ def get_loaders(cfg, corruption_type, severity):
         num_workers=cfg.data.num_workers,
     )  
     
-    return loaders
+    return trainloader, valloader, testloader
